@@ -1,0 +1,27 @@
+{block #content}
+
+<h1 n:block="title">Platby zákazníka <a href="{link Customer:detail, $customer->idCustomer}">{$customer->name} {$customer->surname}</a></h1>
+<p {if $customer->balance<0} style="color:red;"{/if}>Bilance: {$customer->balance} Kč</p>
+<p><a href="{link add, $customer->idCustomer}"><img src="{$baseUri}/img/add.png" title="Přidat platbu">&nbsp;Přidat platbu zákazníkovi</a></p>
+<table class="grid">
+<tr>
+	<th>Datum</th>
+	<th>Částka</th>
+	<th>Hotovost/Banka</th>
+	<th>Popis</a></th>
+	<th>&nbsp;</th>
+</tr>
+
+{foreach $pay as $pays}
+<tr>
+	<td>{$pays->date|date:'%d.%m.%Y'}</td>
+	<td>{$pays->value}</td>
+	<td>{$pays->type}</td>
+	<td>{$pays->description}</td>
+	<td>
+		<a href="{link edit, $customer->idCustomer, $pays->idPayment}"><img src="{$baseUri}/img/edit.png" title="Upravit platbu"></a>
+		<a href="{link delete, $customer->idCustomer, $pays->idPayment}"><img src="{$baseUri}/img/delete.png" title="Smazat platbu"></a>
+	</td>
+</tr>
+{/foreach}
+</table>

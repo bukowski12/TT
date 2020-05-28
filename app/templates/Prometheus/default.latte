@@ -1,0 +1,8 @@
+{block #content}
+
+<h1 n:block="title">Konfigurace Qos</h1>
+
+<p><a href="{link generateConf!}" class="ajax spinner button_run">Vygenerovat nový konfigurační soubor</a></p>
+<p><a href="{link restartPrometheus!}" class="ajax spinner button_run">Restartovat Prometheus</a></p>
+
+{nl2br($conf_file)|noescape}

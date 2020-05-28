@@ -1,0 +1,83 @@
+{block #content}
+
+<h1 n:block="title">Zakaznici</h1>
+
+<p><a href="{link add}"><img src="{$baseUri}/img/add.png" title="Přidat zákazníka">&nbsp;Přidat zákazníka</a></p>
+	{form searchForm}
+		<table>
+			<tr>
+				<td>{label searchtext /}</td>
+				<td>{input searchtext}</td>
+	            <td>{label searchcon /}</td>
+	            <td>{input searchcon}</td>
+			</tr>
+		</table>
+	{/form}
+{snippet searchtable}
+	{control paginator}
+	<table class="grid">
+		<tr>
+			<th><a href="{plink default, surname, $by}">Jméno</a></th>
+			<th><a href="{plink default, address, $by}">Adresa</a></th>
+			<th>Telefon</th>
+			<th>Email</th>
+			<th>VS</th>
+			<th><a href="{plink default, from, $by}">Klient od</a></th>
+			<th>Poznámka</th>
+			<th>&nbsp;</th>
+		</tr>
+		{foreach $customer as $cust}
+			<tr>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->surname} {$cust->name}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->address}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->phone}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->email}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->vs}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->from|date:'%d.%m.%Y'}</td>
+				<td onclick='window.location={plink detail, $cust->idCustomer}'>{$cust->note}</td>
+				<td>
+					<a href="{link detail, $cust->idCustomer}"><img src="{$baseUri}/img/detail.png" title="Detail zákazníka"></a>
+					<a href="{link edit, $cust->idCustomer}"><img src="{$baseUri}/img/edit.png" title="Editovat zákazníka"></a>
+					<a href="{link Client:add, $cust->idCustomer}"><img src="{$baseUri}/img/add.png" title="Přidat zákazníkovi node"></a>
+				</td>
+			</tr>
+		{/foreach}
+	</table>
+	{control paginator}
+{/snippet}
+<script>
+
+$('#frmsearchForm-searchtext').on('search keyup', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+		'invalid_button': $('#frmsearchForm-invalid').attr('checked'),
+		'value': $(this).val(),
+        }
+    });
+});
+
+$('#frmsearchForm-invalid').on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+        'invalid_button': $(this).attr('checked'),
+		'value': $('#frmsearchForm-searchtext').val(),
+        }
+    });
+});
+
+$('#frmsearchForm-searchcon').on('change',function() {
+	//alert ('aaaaaaaaa');
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+        'searchcon': $(this).attr('value'),
+		'value': $('#frmsearchForm-searchtext').val(),
+        }
+    });
+});
+</script>

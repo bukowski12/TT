@@ -1,0 +1,140 @@
+{block #content}
+
+<h1 n:block="title">Detaily zákazníka {$customer->surname} {$customer->name}</h1>
+<div id="detail_info">
+	<table class="detail_grid">
+		<tr>
+			<th>{$customer->surname} {$customer->name} {if $customer->valid==0}<span class="label label-danger">NEPLATNÝ ZÁKAZNÍK</span>{/if}</th>
+			<th style="text-align: right;"><a href="{link Customer:edit, $customer->idCustomer, backlink => $backlink}"><img src="{$baseUri}/img/edit.png" title="Upravit zákazníka"></a></th>
+		</tr>
+		<tr>
+			<td>Adresa:</td><td>{$customer->address}</td>
+		</tr>
+		<tr>
+			<td>Telefon</td><td>{$customer->phone}</td>
+		</tr>
+		<tr>
+			<td>Email:</td><td>{$customer->email}</td>
+		</tr>
+		<tr>
+			<td>VS</td><td>{$customer->vs}</td>
+		</tr>
+		{if $customer->subject == 0}
+			<tr>
+				<td>RČ:</td><td>{$customer->rc}</td>
+			</tr>
+		{else}
+			<tr>
+				<td>Firma:</td><td>{$customer->company}</td>
+			</tr>
+			<tr>
+				<td>IČO:</td><td>{$customer->ico}</td>
+			</tr>
+			<tr>
+				<td>DIČ:</td><td>{$customer->dic}</td>
+			</tr>
+		{/if}
+		<tr>
+			<td>Zákazník od:</td><td>{$customer->from|date:'%d.%m.%Y'}</td>
+		</tr>
+		<tr>
+			<td>Poznámka:</td><td>{$customer->note}</td>
+		</tr>
+		<tr>
+			<td>Bilance:</td><td {if $customer->balance<0} style="color:red;"{/if}>{$customer->balance} Kč</td>
+		</tr>
+		<tr>
+			<td>Měsíční platba je:</td><td>{$fee} Kč</td>
+		</tr>
+		{if $customer->debtWarning}
+			<tr>
+				<td>Stav připojení:</td>
+				<td><span class="label label-warning">Zákazník upozorněn na dluh {$customer->debtWarning}</span>
+				{if $customer->debtLocked==1}<br><span class="label label-danger">Zákazník je zablokován z důvodu dluhu</span>{/if}
+				</td>
+			</tr>
+		{/if}
+	</table>
+</div>
+<div id="detail_node">
+	<table class="detail_grid">
+		<tr style="border: 1px solid #add4fb;">
+			<th>Služba Internet</th>
+			<th style="text-align: right;"><a href="{link Client:add, $customer->idCustomer, backlink => $backlink}"><img src="{$baseUri}/img/add.png" title="Přidat přípojné místo"></a></th>
+		</tr>
+		{foreach $client as $node}
+			<tr style="border: 1px solid #add4fb;">
+				{if $node->valid==1}
+					<td><b>Adresa:</b> {$node->address} <b>Vysílač:</b> {$node->routerInt->router->name} - {$node->ref('routerInt')->name} <b>Tarif:</b>	{$node->tarif->name}</td>
+				{else}
+					<td><b>Adresa:</b> {$node->address} <b>Vysílač:</b> {$node->routerInt->router->name} - {$node->ref('routerInt')->name} <b>Tarif:</b>	{$node->tarif->name}  <span class="label label-danger">SLUŽBA NENÍ NEAKTIVNÍ</span></td>
+				{/if}
+				<td style="text-align: right;">
+					<a href="{link Client:edit, $node->idClient, $customer->idCustomer, backlink => $backlink}"><img src="{$baseUri}/img/edit.png" title="Upravit přípojné místo"></a>
+					<a href="{link Client:delete, $node->idClient, backlink => $backlink}"><img src="{$baseUri}/img/delete.png" title="Smazat přípojné místo"></a>
+					<a href="{link Client:addip, $node->idClient, backlink => $backlink}"><img src="{$baseUri}/img/add.png" title="Přidat IP adresu"></a>
+				</td>
+			</tr>
+			{if $node->related('clientIP','client_id')->count('*') }
+				{foreach $node->related('clientIP','client_id') as $ip}
+					<tr>
+						<td ><span class="space-left">
+							<a href="http://{$ip->ipAddress}"><img src="{$baseUri}/img/router.png" title="Přejít na router"></a>{$ip->ipAddress}{if $ip->publicIP}   <-   {$ip->publicIP}{/if}
+							<span style="font-size:0.7em;">
+							TODAY - Down:{ifset $todaylog[$ip->ipAddress]['down']} {$todaylog[$ip->ipAddress]['down']}{else}0{/ifset}MB
+									Up:{ifset $todaylog[$ip->ipAddress]['up']} {$todaylog[$ip->ipAddress]['up']}{else}0{/ifset}MB
+							YESTERDAY - Down:{ifset $yesterdaylog[$ip->ipAddress]['down']} {$yesterdaylog[$ip->ipAddress]['down']}{else}0{/ifset}MB
+									Up:{ifset $yesterdaylog[$ip->ipAddress]['up']} {$yesterdaylog[$ip->ipAddress]['up']}{else}0{/ifset}MB
+							</span>
+						</span></td>
+						<td style="text-align: right;">
+							<a href="{link Client:editip, $ip->idClientIP, backlink => $backlink}"><img src="{$baseUri}/img/edit.png" title="Upravit IP adresu"></a>
+							<a href="{link Client:deleteip, $ip->idClientIP, backlink => $backlink}"><img src="{$baseUri}/img/delete.png" title="Smazat IP adresu"></a>
+						</td>
+					</tr>
+				{/foreach}
+			{/if}
+		{/foreach}
+	</table>
+</div>
+<div id="detail_node">
+	<table class="detail_grid">
+		<tr style="border: 1px solid #add4fb;">
+			<th>Služba IPTV</th>
+			<th style="text-align: right;">
+				{if $clienttv}
+					<a href="{link Clienttv:delete, $clienttv->idClienttv, backlink => $backlink}"><img src="{$baseUri}/img/delete.png" title="Smazat službu IPTV"></a>
+					<a href="{link Clienttv:edit, $customer->idCustomer, $clienttv->idClienttv, backlink => $backlink}"><img src="{$baseUri}/img/edit.png" title="Upravit nastavení služby"></a>
+				{else}
+					<a href="{link Clienttv:add, $customer->idCustomer, backlink => $backlink}"><img src="{$baseUri}/img/add.png" title="Nastavit službu IPTV"></a>
+				{/if}	
+			</th>
+		</tr>	
+		{if $clienttv}
+			<tr style="border: 1px solid #add4fb;">
+				<td><b>Tarif:</b>	{$clienttv->tariftv->name} <b>Cena:</b>	{$clienttv->tariftv->price}</td><td>&nbsp;&nbsp;&nbsp;</td>
+			</tr>
+		{/if}
+	</table>	
+</div>
+<div id="detail_money">	
+	<table class="grid">
+		<tr>
+			<th colspan="4">Úhrady zákazníka</th>
+			<th style="text-align: right;"><a href="{link Money:add, $customer->idCustomer, backlink => $backlink}"><img src="{$baseUri}/img/add.png" title="Přidat platbu"></a></th>
+		</tr>
+		{foreach $pay as $pays}
+			<tr>
+				<td>{$pays->date|date:'%d.%m.%Y'}</td>
+				<td>{$pays->value}</td>
+				<td>{$pays->type}</td>
+				<td>{$pays->description}</td>
+				<td style="text-align: right;">
+					<a href="{link Money:edit, $customer->idCustomer, $pays->idPayment, backlink => $backlink}"><img src="{$baseUri}/img/edit.png" title="Upravit platbu"></a>
+					<a href="{link Money:delete, $customer->idCustomer, $pays->idPayment, backlink => $backlink}"><img src="{$baseUri}/img/delete.png" title="Smazat platbu"></a>
+				</td>
+			</tr>
+		{/foreach}
+	</table>
+	{control vp1}
+</div>

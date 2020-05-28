@@ -1,0 +1,77 @@
+{block #content}
+
+<h1 n:block="title">Klienti</h1>
+{form searchForm}
+	<table>
+		<tr>
+			<td>{label searchtext /}</td>
+			<td>{input searchtext}</td>
+			<td>{label invalid /}</td>
+            <td>{input invalid}</td>
+		</tr>
+	</table>
+{/form}
+{snippet searchtable}
+<table class="grid">
+<tr>
+	<th>Jméno zákazníka</th>
+	<th>Adresa přípojného místa</th>
+	<th>Klient od</th>
+	<th>Hostname</th>
+	<th>IP Adresy</th>
+	<th>Poznámka</th>
+	<th>&nbsp</th>
+</tr>
+{foreach $customer as $cust}
+	{if $cust->related('client','customer_id')->where("valid", $invalid)->count('*') }
+		{foreach $cust->related('client','customer_id')->where("valid", $invalid) as $cli}
+		<tr>
+			<td>{$cust->surname} {$cust->name}</td>
+			<td>{$cli->address}</td>
+			<td>{$cli->from|date:'%d.%m.%Y'}</td>
+			<td>{$cli->hostname}</td>
+			<td>
+				{if $cli->related('clientIP','client_id')->count('*') }
+					{foreach $cli->related('clientIP','client_id') as $ip}
+						{$ip->ipAddress}{if $ip->publicIP}   <-   {$ip->publicIP}{/if}</br>
+					{/foreach}
+				{/if}
+			</td>
+			<td>{$cli->note}</td>
+			<td>
+				<a href="{link edit, $cli->idClient,$cli->customer_id}"><img src="{$baseUri}/img/edit.png" title="Upravit node"></a>
+				<a href="{link delete, $cli->idClient}"><img src="{$baseUri}/img/delete.png" title="Smazat node"></a>
+				<a href="{link addip, $cli->idClient}"><img src="{$baseUri}/img/addip.png" title="Přidat IP adresu"></a>
+				<a href="{link listip, $cli->idClient}"><img src="{$baseUri}/img/editip.png" title="Upravit IP adresy"></a>
+			</td>
+		</tr>
+		{/foreach}
+	{/if}
+{/foreach}
+</table>
+{/snippet}
+<script>
+
+$('#frmsearchForm-searchtext').on('search keyup', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+		'invalid_button': $('#frmsearchForm-invalid').attr('checked'),
+		'value': $(this).val(),
+        }
+    });
+});
+
+$('#frmsearchForm-invalid').on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+        'invalid_button': $(this).attr('checked'),
+		'value': $('#frmsearchForm-searchtext').val(),
+        }
+    });
+});
+
+</script>

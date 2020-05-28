@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat službu IPTV</h1>
+
+{if $clienttv}
+	<p>Jsi si jistý, že chceš smazat službu IPTV?</p>
+	{control deleteForm}
+
+{else}
+	<p>Služba neexistuje.</p>
+{/if}

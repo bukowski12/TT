@@ -1,0 +1,12 @@
+{block #content}
+
+<h1 n:block="title">Editace IP adresy</h1>
+
+{control ipAddressForm}
+<div id="pop-up">
+	{foreach $freeip as $ip}
+		{if $ip == '1'} 
+			{$iterator->key()}
+		{/if}
+	{/foreach}
+</div>

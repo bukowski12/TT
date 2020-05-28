@@ -1,0 +1,60 @@
+{block #content}
+
+<h1 n:block="title">Platby</h1>
+
+<p style="color: red">Zákazníci nám dluží: {$debit} Kč</p>
+<p><a n:href="bank">Zadaní platby z banky</a></p>
+{form searchForm}
+	<table>
+		<tr>
+			<td>{label searchtext /}</td>
+			<td>{input searchtext}</td>
+		</tr>
+	</table>
+{/form}
+{snippet searchtable}
+	<table class="grid">
+	<tr>
+		<th><a href="{plink default, surname, $by}">Jméno</a></th>
+		<th><a href="{plink default, address, $by}">Adresa</a></th>
+		<th><a href="{plink default, balance, $by}">Bilance</a></th>
+		<th width="150">&nbsp;</th>
+	</tr>
+
+	{foreach $customer as $cust}
+	<tr>
+		{if $cust->balance<0} 
+			<td class="debt">{$cust->surname} {$cust->name}</td>
+			<td class="debt">{$cust->address}</td>
+			<td class="debt">{$cust->balance}</td>
+			<td class="debt">
+				<a href="{link pay, $cust->idCustomer}"><img src="{$baseUri}/img/coins.png" title="Vypsat Úhrady"></a>
+				<a href="{link add, $cust->idCustomer}"><img src="{$baseUri}/img/add.png" title="Přidat platbu"></a>
+			</td>
+		{else}
+		
+			<td>{$cust->surname} {$cust->name}</td>
+			<td>{$cust->address}</td>
+			<td>{$cust->balance}</td>
+			<td>
+				<a href="{link pay, $cust->idCustomer}"><img src="{$baseUri}/img/coins.png" title="Vypsat Úhrady"></a>
+				<a href="{link add, $cust->idCustomer}"><img src="{$baseUri}/img/add.png" title="Přidat platbu"></a>
+			</td>
+		{/if}
+		</tr>
+	{/foreach}
+	</table>
+{/snippet}
+<script>
+
+$('#frmsearchForm-searchtext').on('search keyup', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+		'value': $(this).val(),
+        }
+    });
+});
+
+</script>

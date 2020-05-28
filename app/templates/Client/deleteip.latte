@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat IP adresu</h1>
+
+{if $ipaddress}
+	<p>Jsi si jistý, že chceš smazat IP adresu ‘{$ipaddress->ipAddress}’?</p>
+	{control deleteIpAddressForm}
+
+{else}
+	<p>IP adresa neexistuje.</p>
+{/if}

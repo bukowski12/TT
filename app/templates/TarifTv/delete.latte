@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat tarif</h1>
+
+{if $tariftv}
+	<p>Jsi si jistý, že chceš smazat ‘{$tariftv->name}’?</p>
+	{control deleteForm}
+
+{else}
+	<p>Tarif neexistuje.</p>
+{/if}

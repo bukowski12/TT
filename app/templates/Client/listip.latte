@@ -1,0 +1,24 @@
+{block #content}
+
+<h1 n:block="title">IP Adresy</h1>
+
+<table class="grid">
+<tr>
+	<th>IP Adresa</th>
+	<th>Veřejná</th>
+	<th>MAC adresa</th>
+	<th>&nbsp;</th>
+</tr>
+
+{foreach $ipaddress as $ip}
+<tr>
+	<td>{$ip->ipAddress}</td>
+	<td>{$ip->publicIP}</td>
+	<td>{$ip->macAddress}</td>
+	<td>
+		<a href="{link editip, $ip->idClientIP}"><img src="{$baseUri}/img/edit.png" title="Editovat IP adresu"></a>
+		<a href="{link deleteip, $ip->idClientIP}"><img src="{$baseUri}/img/delete.png" title="Smazat IP adresu"></a>
+	</td>
+</tr>
+{/foreach}
+</table>

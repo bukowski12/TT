@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat zákazníka</h1>
+
+{if $customer}
+	<p>Jsi si jistý, že chceš smazat ‘{$customer->surname} {$customer->name}’?</p>
+	{control deleteForm}
+
+{else}
+	<p>Zákazník neexistuje.</p>
+{/if}

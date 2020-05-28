@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat Platbu</h1>
+{$payment->idPayment} {$payment->value}
+{if $payment}
+	<p>Jsi si jistý, že chceš smazat platbu?</p>
+	{control deleteForm}
+
+{else}
+	<p>Platba neexistuje.</p>
+{/if}

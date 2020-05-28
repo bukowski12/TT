@@ -1,0 +1,28 @@
+{block #content}
+
+<h1 n:block="title">Tarify</h1>
+
+<p><a n:href="add">Přidej tarif</a></p>
+
+<table class="grid">
+<tr>
+	<th>Jméno</th>
+	<th>Rychlost</th>
+	<th>Cena</th>
+	<th>Popis</a></th>
+	<th>&nbsp;</th>
+</tr>
+
+{foreach $tarif as $tar}
+<tr>
+	<td>{$tar->name}</td>
+	<td>{$tar->speed}</td>
+	<td>{$tar->price}</td>
+	<td>{$tar->description}</td>
+	<td>
+		<a href="{link edit, $tar->idTarif}"><img src="{$baseUri}/img/edit.png" title="Upravit tarif"></a>
+		<a href="{link delete, $tar->idTarif}"><img src="{$baseUri}/img/delete.png" title="Smazat tarif"></a>
+	</td>
+</tr>
+{/foreach}
+</table>

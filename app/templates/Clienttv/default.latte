@@ -1,0 +1,29 @@
+{block #content}
+
+<h1 n:block="title">Zákazníci</h1>
+<table class="grid">
+<tr>
+	<th>Jméno zákazníka</th>
+	<th>Adresa</th>
+	<th>Službu od</th>
+	<th>Tarif</th>
+	<th>Cena</th>
+	<th>Poznámka</th>
+	<th>&nbsp</th>
+</tr>
+{dump $clienttv}
+{foreach $clienttv as $cli}
+	<tr>
+		<td>{$cli->ref('customer')->surname} {$cli->ref('customer')->name}</td>
+		<td>{$cli->ref('customer')->address}</td>
+		<td>{$cli->from|date:'%d.%m.%Y'}</td>
+		<td>{$cli->ref('tarifTv','tariftv_id')->name}</td>
+		<td>{$cli->ref('tarifTv','tariftv_id')->price}</td>
+		<td>{$cli->note}</td>
+		<td>
+			<a href="{link edit, $cli->ref('customer')->idCustomer, $cli->idClienttv}"><img src="{$baseUri}/img/edit.png" title="Upravit nastavení služby">
+			<a href="{link Clienttv:delete, $cli->idClienttv}"><img src="{$baseUri}/img/delete.png" title="Smazat službu IPTV"></a>
+		</td>
+	</tr>
+{/foreach}
+</table>

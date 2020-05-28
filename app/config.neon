@@ -1,0 +1,38 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# http://nette.org/security-warning
+#
+common:
+	php:
+		date.timezone: Europe/Prague
+
+	nette:
+		database:
+			dsn = 'mysql:host=db.tt.eu;dbname=tt'
+			user = tt_user
+			password = tt_pass
+
+		container:
+			debugger: true
+
+	services:
+		authenticator: Authenticator
+		customerRepository: CustomerRepository
+		routerRepository: RouterRepository
+		routerintRepository: RouterIntRepository
+		paymentRepository: PaymentRepository
+		tarifRepository: TarifRepository
+		tariftvRepository: TarifTvRepository
+		clientRepository: ClientRepository
+		clientInactiveRepository: ClientInactiveRepository
+		clientIPRepository: ClientIPRepository
+		settingsRepository: SettingsRepository
+		trafficlogRepository: TrafficLogRepository
+		clienttvRepository: ClienttvRepository
+		logRepository: LogRepository
+		logger: Logger
+
+
+production < common:
+
+development < common:

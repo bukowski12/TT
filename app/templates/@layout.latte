@@ -1,0 +1,59 @@
+{**
+ * Layout of Nette Framework example CD collection (Akrabat)
+ *
+ * @package    MyApplication
+ *
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ * @param Nette\Web\User $user  current user
+ *}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Nette Framework example" />
+	<meta n:ifset="$robots" name="robots" content="{$robots}">
+
+	<title>{block #title|striptags|trim}{/block} | Twotowers billing system</title>
+
+	<link rel="stylesheet" media="screen" href="{$basePath}/css/site.css" />
+	<script src="{$basePath}/js/jquery.min.js"></script>
+<!--	<script src="{$basePath}/js/jquery.nette.js"></script> -->
+	<script src="{$basePath}/js/nette.ajax.js"></script>
+	<script src="{$basePath}/js/spinner.ajax.js"></script>
+	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/jquery.ajaxform.js"></script>
+	<script src="{$basePath}/js/tt.js"></script>
+</head>
+
+<body>
+	{ifset $restart}
+		<div class="flash error">Byla zmenena konfigurace je potreba vygenerovat a restartovat Prometheus!</div>
+	{/ifset}
+	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+	<div>
+		<p id="logged-in" n:if="$user->loggedIn">
+			Přihlášen jako {$user->identity->login}. <a n:href="Sign:change">Změna</a> hesla. <a n:href="Sign:out">Odhlásit</a>
+		</p>
+	</div>
+	<div id="menu">
+		<ul id="navlist">
+			<li><a n:href="Customer:default" n:class="$presenter->isLinkCurrent('Customer:*') ? current">Zakaznici</a></li>
+			<li><a n:href="Client:default" n:class="$presenter->isLinkCurrent('Client:*') ? current">Služba Internet</a></li>
+			<li><a n:href="Clienttv:default" n:class="$presenter->isLinkCurrent('Clienttv:*') ? current">Služba IPTV</a></li>
+			<li><a n:href="Router:default" n:class="$presenter->isLinkCurrent('Router:*') ? current">Vysílače</a></li>
+			<li><a n:href="Money:default" n:class="$presenter->isLinkCurrent('Money:*') ? current">Money</a></li>
+			<li><a n:href="Tarif:default" n:class="$presenter->isLinkCurrent('Tarif:*') ? current">Tarif</a></li>
+			<li><a n:href="Tariftv:default" n:class="$presenter->isLinkCurrent('Tariftv:*') ? current">Tarif IPTV</a></li>
+			<li><a n:href="Prometheus:default" n:class="$presenter->isLinkCurrent('Prometheus:*') ? current">Prometheus</a></li>
+			<li><a n:href="Settings:default" n:class="$presenter->isLinkCurrent('Settings:*') ? current">Nastavení</a></li>
+			<li><a n:href="Log:default" n:class="$presenter->isLinkCurrent('Log:*') ? current">Log</a></li>
+		</ul>
+	</div>
+	<div id="content">
+		{include #content}
+	</div>
+</body>
+</html>

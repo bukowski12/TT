@@ -1,0 +1,25 @@
+{block #content}
+
+<h1 n:block="title">Zadání plateb z banky</h1>
+
+{control bankForm}
+<br>
+<br>
+{ifset $transfer}
+	<table>
+	{foreach $transfer as $trans}
+		{if $trans['error'] == 0}
+			<tr bgcolor="green">
+		{elseif $trans['error'] == 2}
+			<tr bgcolor="orange">
+		{else}
+			<tr bgcolor="red">
+		{/if}
+		<td>{$trans['status']}</td>
+		<td>{$trans['date']}</td>
+		<td>{$trans['vs']}</td>
+		<td>{$trans['kc']}</td>
+		</tr>
+	{/foreach}
+	</table>
+{/ifset}

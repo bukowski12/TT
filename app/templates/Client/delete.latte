@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat klienta</h1>
+
+{if $client}
+	<p>Jsi si jistý, že chceš smazat přípojné místo na adrese {$client->address}?</p>
+	{control deleteForm}
+
+{else}
+	<p>Klient neexistuje.</p>
+{/if}

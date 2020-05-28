@@ -1,0 +1,42 @@
+{block #content}
+
+<h1 n:block="title">AP vysílače</h1>
+
+<p><a n:href="add">Pridej apcko</a></p>
+
+{foreach $router as $routers}
+<table class="grid">
+<tr>
+	<th><b>{$routers->name}</b><br>{$routers->address}</th>
+	<th><img src="{$baseUri}/img/map.png" title="Zobrazit na mapě">&nbsp;{$routers->gps}</th>
+	<th>{$routers->ipAddress}/{$routers->netmask}</th>
+	<th>{$routers->description}</th>
+	<th>
+		<a href="{link edit, $routers->idRouter}"><img src="{$baseUri}/img/edit.png" title="Editovat router"></a>
+		<a href="{link delete, $routers->idRouter}"><img src="{$baseUri}/img/delete.png" title="Smazat router"></a>
+		<a href="{link addint, $routers->idRouter}"><img src="{$baseUri}/img/addip.png" title="Přidej interface"></a>
+	</th>
+</tr>
+<tr>
+	<td class="inner-title" colspan="100%">Interface routeru</td>
+</tr>
+<table class="grid inner">
+{foreach $routers->related('routerInt') as $interface}
+	<tr style="height:10px">
+			<td>{$interface->type}</td>
+			<td>{$interface->name}</td>
+			<td>{$interface->ipAddress}</td>
+			<td>{$interface->netmask}</td>
+			<td>
+				<a href="{link editint, $interface->idRouterInt}"><img src="{$baseUri}/img/editip.png" title="Editovat interface"></a>
+				<a href="{link deleteint, $interface->idRouterInt}"><img src="{$baseUri}/img/deleteip.png" title="Smazat interface"></a>
+			</td>
+	<tr>	
+{/foreach}
+</table>
+		</td>
+</tr>
+
+</table>
+<br>
+{/foreach}

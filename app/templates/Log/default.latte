@@ -1,0 +1,59 @@
+{block #content}
+
+<h1 n:block="title">Logy</h1>
+
+{form searchForm}
+	<table>
+		<tr>
+			<td>{label searchtext /}</td>
+			<td>{input searchtext}</td>
+			<td>{label invalid /}</td>
+            <td>{input invalid}</td>
+		</tr>
+	</table>
+{/form}
+{snippet searchtable}
+	{control paginator}
+	<table class="grid">
+		<tr>
+			<th>Čas</th>
+			<th>Uživatel</th>
+			<th>Typ</th>
+			<th>Log</th>
+		</tr>
+		{foreach $log as $logging}
+			<tr>
+				<td>{$logging->timestamp}</td>
+				<td>{$logging->ref('user','user_id')->login}</td>
+				<td>{$logging->type}</td>
+				<td>{$logging->description}</td>
+			</tr>
+		{/foreach}
+	</table>
+	{control paginator}
+{/snippet}
+<script>
+
+$('#frmsearchForm-searchtext').on('search keyup', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+		'invalid_button': $('#frmsearchForm-invalid').attr('checked'),
+		'value': $(this).val(),
+        }
+    });
+});
+
+$('#frmsearchForm-invalid').on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link search!},
+        data: {
+        'invalid_button': $(this).attr('checked'),
+		'value': $('#frmsearchForm-searchtext').val(),
+        }
+    });
+});
+
+</script>

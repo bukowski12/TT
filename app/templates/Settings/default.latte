@@ -1,0 +1,49 @@
+{block #content}
+
+<h1 n:block="title">Nastavení</h1>
+<p><p><a n:href="edit">Upravit nastavení</a></p>
+<table class="grid">
+{if $settings}
+	<tr>
+		<td>Název společnosti</td>
+		<td>{$settings->name}</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>{$settings->email}</td>
+	</tr>
+	<tr>
+		<td>Cesta ke konfiguraci Promethea</td>
+		<td>{$settings->pathconf}</td>
+	</tr>
+	<tr>
+		<td>Jméno souboru hosts</td>
+		<td>{$settings->hostsfile}</td>
+	</tr>
+	<tr>
+		<td>Jméno souboru hosts include</td>
+		<td>{$settings->hostsinc}</td>
+	</tr>
+{else}
+	<tr>
+		<td>Název společnosti</td>
+		<td>Nenastaveno</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>Nenastaveno</td>
+	</tr>
+	<tr>
+		<td>Cesta ke konfiguraci Promethea</td>
+		<td>Nenastaveno</td>
+	</tr>
+	<tr>
+		<td>Jméno souboru hosts</td>
+		<td>Nenastaveno</td>
+	</tr>
+	<tr>
+		<td>Jméno souboru hosts include</td>
+		<td>Nenastaveno</td>
+	</tr>
+{/if}
+</table>

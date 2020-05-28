@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat vysílač</h1>
+
+{if $router}
+	<p>Jsi si jistý, že chceš smazat vysílač ‘{$router->name}’?</p>
+	{control deleteForm}
+
+{else}
+	<p>Vysílač neexistuje.</p>
+{/if}

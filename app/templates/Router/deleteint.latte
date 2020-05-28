@@ -1,0 +1,11 @@
+{block #content}
+
+<h1 n:block="title">Smazat rozhraní</h1>
+
+{if $routerint}
+	<p>Jsi si jistý, že chceš smazat rozhraní ‘{$routerint->ipAddress}’?</p>
+	{control deleteIntForm}
+
+{else}
+	<p>Rozhraní neexistuje.</p>
+{/if}
