@@ -1,1 +1,1 @@
-IPS manager write in Nette
+IPS manager written in Nette
